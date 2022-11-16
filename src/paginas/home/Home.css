@@ -1,0 +1,42 @@
+.center_home {
+  margin-top: 15%;
+  margin-bottom: 30%;
+  vertical-align: middle;
+  display: inline;
+}
+
+.form__input_data {
+  border:0;
+  border-bottom:1px solid var(--texto);
+  background:transparent;
+  width:150px;
+  padding:8px 0 5px 0;
+  font-size:16px;
+  color:var(--texto);
+  text-align: center;
+  transition: all 0.3s;
+  position: relative;
+  margin: 20px;
+  transition: all 0.2s;
+}
+
+.form__input_horario {
+  border:0;
+  border-bottom:1px solid var(--texto);
+  background:transparent;
+  width:100px;
+  padding:8px 0 5px 0;
+  font-size:16px;
+  color:var(--texto);
+  text-align: center;
+  transition: all 0.3s;
+  position: relative;
+  margin: 20px;
+  transition: all 0.2s;
+}
+
+.form__input_home:focus{ 
+  border:none;	
+  outline:none;
+  border-bottom:1px solid var(--texto);	
+ }

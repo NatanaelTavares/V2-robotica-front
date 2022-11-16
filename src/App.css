@@ -1,0 +1,128 @@
+:root {
+    --background: #282c34;
+    --texto: white;
+    --navbar: #333;
+    --textoNavbar: rgb(255, 255, 255);
+  }
+  
+  input {
+    color-scheme: dark;
+  }
+  
+  .button {
+    position: relative;
+    height: 40px;
+    width: 200px;
+    font-size: large;
+    box-sizing: border-box;
+    display:inline-block;
+    border: 1.5px solid var(--texto);
+    margin: 20px;
+    border-radius:5px;
+    font-family:'Roboto',sans-serif;
+    color: var(--texto);
+    background-color: var(--background);
+    text-align :center;
+    transition: all 0.2s;
+  }
+  
+  .button:hover{
+    color: var(--background);
+    background-color: var(--texto);
+    cursor: pointer;
+  }
+  
+  .text {
+    position: relative;
+    display: block;
+    text-align: center;
+    font-size: x-large;
+    font-family:'Roboto',sans-serif;
+    color: var(--texto);
+  }
+  
+  .center {
+    margin-top: 50%;
+    margin-bottom: 30%;
+    vertical-align: middle;
+    display: inline;
+  }
+  
+  .background {
+    background-color: var(--background);
+    height: 100%;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  hr {
+    width: 100%;
+    border: 1px solid #5e5e5e;
+    margin-bottom: 5%;
+  }
+  .form__input {
+    border:0;
+    border-bottom:1px solid var(--texto);
+    background:transparent;
+    width:100px;
+    padding:8px 0 5px 0;
+    font-size:16px;
+    color:var(--texto);
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+    margin: 20px;
+    transition: all 0.2s;
+  }
+  
+  .form__input:focus{ 
+    border:none;	
+    outline:none;
+    border-bottom:1px solid var(--texto);	
+   }
+  
+  .ul_navbar {
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--navbar);
+  }
+  
+  .navbar_left {
+    float: left;
+    display: block;
+    color: var(--textoNavbar);
+    text-align: center;
+    border-right: 2px solid var(--background);
+    padding: 18px 16px;
+    text-decoration: none;
+    font-size:medium;
+    font-family:'Roboto',sans-serif;
+    transition: all 0.2s;
+  }
+  
+  .navbar_left:hover {
+    background-color:var(--textoNavbar);
+    color: var(--navbar);
+    cursor: pointer;
+  }
+  
+  .navbar_right {
+    float: right;
+    color: var(--textoNavbar);
+    text-align: center;
+    padding-top: 14px; 
+    padding-right: 16px;
+    padding-right: 16px;
+    padding-right: 16px;
+    text-decoration: none;
+    font-size: larger;
+    font-weight: bolder;
+  }
