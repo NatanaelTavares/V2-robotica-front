@@ -2,10 +2,11 @@ import './AddAmbiente.css';
 import '../../App.css';
 import axios from 'axios'
 import hostBackEnd from '../../App';
-
 import React, { Component } from 'react'
 
 class AddAmbiente extends Component {
+  //listaAmbientes: lista dos ambientes já existentes no banco de dados, retornada pelo back end
+  //ambientesDispositivo: lista de ambientes que serão adicionados ao dispositivo, é preenchida pelas checkboxes na hora do cadastro de dispositivo
   state = {
     nomeAmbiente: '',
     nomeDispositivo: '',
@@ -14,6 +15,7 @@ class AddAmbiente extends Component {
     ambientesDispositivo: [],
   }
 
+  //Função que carrega a lista dos ambientes existentes no banco de dados, se a lista possuir ambientes estes serão exibidos como checkboxes para cadastro do dispositivo
   componentDidMount() {
     axios
     .get(hostBackEnd + '/ambientes')
@@ -36,20 +38,29 @@ class AddAmbiente extends Component {
     this.setState({ [e.target.name]: e.target.value })
   }
 
-  checkboxChangeHandler(id) {
-    /*let ambienteExiste = false
-    this.state.ambientesDispositivo.forEach(element => {
-      if(element === id) {
-        this.setState(this.state.ambientesDispositivo.pop())
-        ambienteExiste = true
+  //Atualiza os elementos da lista de ambientes selecionados para o dispositivo conforme as checkboxes são marcadas/desmarcadas
+  checkboxChangeHandler(e) {
+    let ambientes = this.state.ambientesDispositivo;
+    let check = e.target.checked
+    let checkedAmbiente = e.target.value
+
+    console.log(checkedAmbiente)
+
+    if(check) {
+      this.state.ambientesDispositivo.push(checkedAmbiente)
+    } else {
+      var i = ambientes.indexOf(checkedAmbiente)
+      if(i > -1) {
+        ambientes.splice(i, 1)
+        this.setState({
+          ambientesDispositivo: ambientes
+        })
       }
-    })
-    if(!ambienteExiste) {
-      this.setState(this.state.ambientesDispositivo.push(id))
-    }*/
+    }
   }
 
   submitHandlerAmbiente() {
+    //Cria a variável que será o json enviado para o back e deleta as propriedades desnecessárias do state
     let dadosAmbiente = this.state;
     delete dadosAmbiente.nomeDispositivo
     delete dadosAmbiente.descricao
@@ -72,13 +83,15 @@ class AddAmbiente extends Component {
     });
   }
 
+
   submitHandlerDispositivo() {
     let dadosDispositivo = this.state;
     delete dadosDispositivo.nomeAmbiente
     delete dadosDispositivo.listaAmbientes
-    delete dadosDispositivo.ambientesDispositivo
 
-    console.log(dadosDispositivo)
+    for(var i = 0; i < dadosDispositivo.ambientesDispositivo.length; i++) {
+      dadosDispositivo.ambientesDispositivo[i] = JSON.parse(dadosDispositivo.ambientesDispositivo[i])
+    }
 
     axios
     .post(hostBackEnd + '/postDispositivo', dadosDispositivo)
@@ -125,7 +138,7 @@ class AddAmbiente extends Component {
                     <ul>
                       {this.state.listaAmbientes.map(({id, nomeAmbiente}) => (
                         <li className='li' key={id}>
-                          <input type="checkbox" className='checkbox' onChange={this.checkboxChangeHandler(id)}/>
+                          <input type="checkbox" className='checkbox' value={'{"id": "' + id + '", "nomeAmbiente": "' + nomeAmbiente + '"}'} onChange={this.checkboxChangeHandler.bind(this)}/>
                           <label className='label'>{nomeAmbiente}</label>
                         </li>
                       ))}

@@ -31,6 +31,7 @@ class Home extends Component {
   }
 
   submitHandler() {
+    //Cria a variável que será o json enviado para o back e deleta o programarHorarios, já que este não é necessário para o back end
     let dados = this.state;
     delete dados.programarHorarios
 
@@ -48,6 +49,7 @@ class Home extends Component {
     });
   }
 
+  //Ativa os componentes da configuração de horário
   handleProgramarHorarios() {
     this.setState({
       programarHorarios : true
