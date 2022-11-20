@@ -1,98 +1,88 @@
 import './Home.css';
 import '../../App.css';
 import axios from 'axios'
-import hostBackEnd from '../../App';
-import React, { Component } from 'react'
+import  { hostBackEnd, hostWebSocket } from '../../App';
+import React, { Component, useState, useCallback } from 'react'
+import useWebSocket from 'react-use-websocket';
 
-class Home extends Component {
-  state = {
+const Home  = () => {
+  const [programarHorarios, setProgramarHorarios] = useState(false);
+  const [dadosJson, setDadosJson] = useState({
     data: '',
     horario: '',
-    programarHorarios : false
+  });
+  
+  const socketUrl = 'ws://localhost:3001'
+
+  const { sendMessage, sendJsonMessage, lastMessage, lastJsonMessage, readyState } = useWebSocket(socketUrl, {
+    onOpen: () => console.log('Conectado ao websocket'),
+    onMessage: (lastMessage = MessageEvent.data) => {
+      if (lastMessage) {
+        console.log(lastMessage.data)
+        alert(lastMessage.data)
+        window.location.reload(true)
+      }
+    },
+    onError: (event) => { console.error(event); },
+    shouldReconnect: (closeEvent) => true,
+    reconnectInterval: 3000
+  });
+
+  const ColocarRacao = useCallback(() => sendMessage('Ler'), []);
+
+  const ConfirmarHorario = useCallback(() => sendJsonMessage(dadosJson), []);
+
+  function handleClickColocarRacao(){
+    ColocarRacao()
+    console.log('Mensagem enviada!')
+    console.log(lastMessage)
   }
 
-  adicionarRacao() {
-    axios
-    .get(hostBackEnd + '/addRacao')
-    .then(response => {
-      console.log(response)
-      alert("Ração adicionada com sucesso")
-      window.location.reload(true)
-    })
-    .catch(error => {
-      console.log(error);
-      alert("Não foi possível adicionar a ração")
-      window.location.reload(true)
-    });
+  function handleClickConfirmarHorario(){
+    ConfirmarHorario()
+    console.log(dadosJson)
   }
 
-  changeHandler = e => {
-    this.setState({ [e.target.name]: e.target.value })
+  const changeHandler = e => {
+    const {name, value} = e.target;
+    setDadosJson({...dadosJson, [name]: value})
   }
 
-  submitHandler() {
-    //Cria a variável que será o json enviado para o back e deleta o programarHorarios, já que este não é necessário para o back end
-    let dados = this.state;
-    delete dados.programarHorarios
+  var data, horario
 
-    console.log(dados)
-
-    axios
-    .post(hostBackEnd + '/postHorario', dados)
-    .then(response => {
-      console.log(response)
-      alert("Horário adicionado com sucesso")
-    })
-    .catch(error => {
-      console.log(error);
-      alert("Não foi possível adicionar o horário")
-    });
-  }
-
-  //Ativa os componentes da configuração de horário
-  handleProgramarHorarios() {
-    this.setState({
-      programarHorarios : true
-    })
-  }
-
-  render() {
-    const {data, horario} = this.state
-
-    return (
-      <div className='background'>
-        <div className='container'>
-          <ul className='ul_navbar'>
-            <li className='navbar_left' onClick={() => window.location.href='/addAmbiente'}>Adicionar ambiente <i class="fa-solid fa-circle-plus"></i></li>
-            <li className='navbar_left'>Ambientes</li>
-            <li className='navbar_right'><i class='fas fa-paw'></i> Nome do App</li>
-          </ul>
-          <div className='center_home' align='center'>
-            <text className='text'>O que deseja fazer?</text> 
-            <p></p>
-            <button class="button" onClick={() => this.adicionarRacao()}>Colocar ração</button>
-            <button class="button" onClick={() => this.handleProgramarHorarios()}>Programar horário</button>
-            <div>
-              {this.state.programarHorarios ? (
-                <div align='center'>
-                  <div class="form__group" >
-                    <hr></hr>
-                    <text className='text'>Configurar horário</text> 
-                    <p></p>
-                    <input type="date" class="form__input_data" id="data" placeholder="Data" name='data' value={data} onChange={this.changeHandler}/>
-                    <input type="time" class="form__input_horario" id="hora" placeholder="Horário" name='horario' value={horario} onChange={this.changeHandler}/>
-                    <button class="button" onClick={() => this.submitHandler()}>Confirmar horário</button>
-                  </div>
+  return (
+    <div className='background'>
+      <div className='container'>
+        <ul className='ul_navbar'>
+          <li className='navbar_left' onClick={() => window.location.href='/addAmbiente'}>Adicionar ambiente <i class="fa-solid fa-circle-plus"></i></li>
+          <li className='navbar_left'>Ambientes</li>
+          <li className='navbar_right'><i class='fas fa-paw'></i> Nome do App</li>
+        </ul>
+        <div className='center_home' align='center'>
+          <text className='text'>O que deseja fazer?</text> 
+          <p></p>
+          <button class="button" onClick={() => handleClickColocarRacao()}>Colocar ração</button>
+          <button class="button" onClick={() => setProgramarHorarios(true)}>Programar horário</button>
+          <div>
+            {programarHorarios ? (
+              <div align='center'>
+                <div class="form__group" >
+                  <hr></hr>
+                  <text className='text'>Configurar horário</text> 
+                  <p></p>
+                  <input type="date" class="form__input_data" id="data" placeholder="Data" name='data' value={data} onChange={changeHandler}/>
+                  <input type="time" class="form__input_horario" id="hora" placeholder="Horário" name='horario' value={horario} onChange={changeHandler}/>
+                  <button class="button" onClick={() => handleClickConfirmarHorario()}>Confirmar horário</button>
                 </div>
-              ) : (
-                <text></text>
-              )} 
-            </div>
+              </div>
+            ) : (
+              <text></text>
+            )} 
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default Home;
