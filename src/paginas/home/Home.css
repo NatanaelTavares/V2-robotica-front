@@ -51,3 +51,17 @@
   outline:none;
   border-bottom:1px solid var(--texto);	
  }
+
+ #medidor {
+  float: left;
+  color: var(--textoNavbar);
+  text-align: center;
+  padding: 18px 16px;
+  text-decoration: none;
+  font-size: large;
+  font-weight: normal;
+  text-decoration: none;
+  font-size:medium;
+  font-family:'Roboto',sans-serif;
+  transition: all 0.2s;
+}

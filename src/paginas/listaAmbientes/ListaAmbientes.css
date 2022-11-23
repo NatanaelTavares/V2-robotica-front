@@ -1,0 +1,29 @@
+:root {
+    --border: #5e5e5e;
+}
+  
+.list_text {
+  height: 35px;
+  border:0;
+  background:transparent;
+  font-size:16px;
+  color:var(--texto);
+  text-align: left;
+  transition: all 0.3s;
+  position: relative;
+  transition: all 0.2s;
+  max-width: 100px;
+  width: 100%;
+  caret-color: transparent;
+}
+
+.list_text:focus{ 
+    border:none;	
+    outline:none;
+}
+
+.list_button:hover{
+    color: var(--background);
+    background-color: var(--texto);
+    cursor: pointer;
+}

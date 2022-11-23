@@ -1,0 +1,39 @@
+.list_text_disp {
+    height: 35px;
+    border:0;
+    background:transparent;
+    font-size:16px;
+    color:var(--texto);
+    text-align: left;
+    transition: all 0.3s;
+    position: relative;
+    transition: all 0.2s;
+    max-width: 300px;
+    width: 100%;
+    caret-color: transparent;
+}
+
+.list_text_disp:focus{ 
+    border:none;	
+    outline:none;
+}
+
+.list_text_amb {
+    height: 35px;
+    border:0;
+    background:transparent;
+    font-size:16px;
+    color:var(--texto);
+    text-align: left;
+    transition: all 0.3s;
+    position: relative;
+    transition: all 0.2s;
+    max-width: 150px;
+    width: 100%;
+    caret-color: transparent;
+}
+
+.list_text_amb:focus{ 
+    border:none;	
+    outline:none;
+}
