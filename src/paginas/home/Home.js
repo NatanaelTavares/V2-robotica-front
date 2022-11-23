@@ -1,6 +1,6 @@
 import './Home.css';
 import '../../App.css';
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import useWebSocket from 'react-use-websocket';
 
 const Home  = () => {
@@ -9,10 +9,14 @@ const Home  = () => {
   const [dadosJson, setDadosJson] = useState({
     horario: '',
   });
+  const [dadosHora, setDadosHora] = useState({
+    hora: '',
+    minutos: ''
+  });
   
   //const socketUrl = 'ws://168.197.117.82:3000'
   const socketUrl = 'ws://localhost:3001'
-
+  
   const { sendMessage, sendJsonMessage, lastMessage } = useWebSocket(socketUrl, {
     onOpen: () => console.log('Conectado ao websocket'),
     onMessage: (lastMessage = MessageEvent.data) => {
@@ -28,7 +32,15 @@ const Home  = () => {
 
   const RegarPlanta = useCallback(() => sendMessage('regar'), [sendMessage]);
 
-  const ConfirmarHorario = useCallback(() => sendJsonMessage(dadosJson), [sendJsonMessage, dadosJson]);
+  const ConfirmarHorario = useCallback(() => sendJsonMessage(dadosHora), [sendJsonMessage, dadosHora]);
+
+  useEffect(() => {
+    if(dadosHora.hora !== '' && dadosHora.minutos !== '') {
+      ConfirmarHorario()
+      console.log(dadosHora)
+      alert("Horário adicionado")
+    }
+  }, [dadosHora, ConfirmarHorario]);
 
   function handleClickRegarPlanta(){
     RegarPlanta()
@@ -38,9 +50,11 @@ const Home  = () => {
 
   function handleClickConfirmarHorario(){
     if (dadosJson.horario !== '') {
-      ConfirmarHorario()
-      alert("Horário adicionado")
-      console.log(dadosJson)
+      var arr = dadosJson.horario.split(":")
+      setDadosHora({
+        hora: arr[0],
+        minutos: arr[1]
+      })
     } else {
       alert("Escolha um horário")
     }
